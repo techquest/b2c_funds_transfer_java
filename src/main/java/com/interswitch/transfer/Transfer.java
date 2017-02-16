@@ -1,5 +1,5 @@
 package com.interswitch.transfer;
 
-interface Transfer {
+public interface Transfer {
     public Object send();
 }
