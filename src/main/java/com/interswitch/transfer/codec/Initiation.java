@@ -7,6 +7,13 @@ public class Initiation {
     private String paymentMethodCode;
     private String channel;
     
+    public Initiation(String amount, String currencyCode, String paymentMethodCode, String channel){
+        this.amount = amount;
+        this.currencyCode = currencyCode;
+        this.paymentMethodCode = paymentMethodCode;
+        this.channel = channel;
+    }
+    
     public String getAmount() {
         return amount;
     }

@@ -1,43 +1,51 @@
 package com.interswitch.transfer.driver;
 
+import java.util.HashMap;
+
 import com.interswitch.techquest.auth.Interswitch;
+import com.interswitch.transfer.Constants;
 import com.interswitch.transfer.FundTransfer;
 import com.interswitch.transfer.TransferRequest;
 
-/**
- * 
- * @author ugochukwu.okeke
- * App to test the different aspects of the package
- *
- */
 public class AppDriver {
 
-    public static Interswitch interswitch = new Interswitch("IKIA2EFBE1EF63D1BBE2AF6E59100B98E1D3043F477A", "uAk0Amg6NQwQPcnb9BTJzxvMS6Vz22octQglQ1rfrMA=",Interswitch.ENV_DEV);
-    
-    public static void main(String[] args){
-        
-        FundTransfer transfer = FundTransfer.getInstance("AC");
-        
-        String initCode = transfer.getInitiatingEntityCode();
-        
-        System.out.println("initiating code is "+initCode);
-        
-        TransferRequest transferer = new TransferRequest.Builder("PBL")
-            .sender("07036913492","grandeur_man@yahoo.com","Desmond","Samuel")
-            .beneficiary("07036913492", "grandeur_man@yahoo.com", "Desmond", "Samuel")
-            .initiator("15000", "566","CA","7")
-            .terminator("15000", "058","566","AC","NG","0114951936","20")
-            .mac("F5C858C1DDA905F620BBD59E2559C7809AAC11DA54507BE12EC1673AA9D5F82F0B5EEA7E57FDA3E48CFA1D2E93E4306BF1C5BE917FD42DD858D025D799E86A58")
+    private static final String initiatingEntityCode = "PBL";
+    private static final String terminalId = "3PBL0001";
+    private final static String clientId = "IKIA2EFBE1EF63D1BBE2AF6E59100B98E1D3043F477A";
+    private final static String clientSecret = "uAk0Amg6NQwQPcnb9BTJzxvMS6Vz22octQglQ1rfrMA=";
+
+    public static void main(String[] args) {
+
+        /***- START- ***/
+        FundTransfer transfer = new FundTransfer(clientId, clientSecret, initiatingEntityCode);
+
+        TransferRequest transferer = new TransferRequest.Builder("PBL").senderPhoneNumber("07036913492")
+            .senderEmail("grandeur_man@yahoo.com")
+            .senderLastName("Desmond")
+            .senderOtherNames("Samuel")
+            .beneficiaryPhoneNumber("07036913492")
+            .beneficiaryEmail("grandeur_man@yahoo.com")
+            .beneficiaryLastName("Desmond")
+            .beneficiaryOtherNames("Samuel")
+            .setAmount("15000")
+            .initiatorChannel("7")
+            .terminationEntityCode("044")
+            .terminationAccountNumber("0114951936")
             .surcharge("10000")
-            .transferCode("10360575603527")
+            .requestRef("10360575603527")
             .build();
-        
+
+        // headers
+        HashMap<String, String> H = new HashMap<>();
+        H.put(Constants.TERMINAL_ID, terminalId);
+
         try {
-            transfer.send(transferer);
+            transfer.send(transferer, H);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            //contact support at interswitch
             e.printStackTrace();
         }
-        
+        /***- FINISH - ***/
+
     }
 }

@@ -5,6 +5,11 @@ public class AccountReceivable {
     private String accountNumber;
     private String accountType;
     
+    public AccountReceivable(String accountNumber, String accountType) {
+        this.accountType = accountType;
+        this.accountNumber = accountNumber;
+    }
+    
     public String getAccountNumber() {
         return accountNumber;
     }

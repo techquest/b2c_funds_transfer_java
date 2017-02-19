@@ -1,47 +1,49 @@
 package com.interswitch.transfer;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.interswitch.techquest.auth.Interswitch;
 import com.interswitch.techquest.auth.utils.ConstantUtils;
+import com.interswitch.transfer.api.impl.GsonSerializer;
 import com.interswitch.transfer.driver.AppDriver;
 
 public class FundTransfer implements Transfer {
     
     private String initiatingEntityCode;
+    private String clientId;
+    private String clientSecret;
     
-    private static FundTransfer instance;
+    private Interswitch interswitch;
     
-    private FundTransfer(){
-        
+    private GsonSerializer codec;
+    
+    public FundTransfer(String clientId, String clientSecret, String initiatingEntityCode) {
+        this.initiatingEntityCode=initiatingEntityCode;
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.interswitch = new Interswitch(clientId, clientSecret,Interswitch.ENV_DEV);
+        codec = new GsonSerializer();
     }
-    
-    public static FundTransfer getInstance(String initiatingEntityCode){
-        if(!(instance instanceof FundTransfer)) {
-            instance = new FundTransfer();
-            instance.initiatingEntityCode = initiatingEntityCode;
-        }
-        return instance;
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
     }
 
     public String getInitiatingEntityCode() {
         return initiatingEntityCode;
     }
 
-    public Object send(TransferRequest tr) throws Exception {
+    public Object send(TransferRequest tr, Map<String, String> extraHeaders) throws Exception {
         
-        // create an instance of TransferRequest
-//        /TransferRequest transfer
-        Gson gson = new Gson();
-        String json = gson.toJson(tr);
+        String json = codec.marshall(tr);
         System.out.println(json);
-        HashMap<String, String> interswitchResponse;
-        HashMap<String, String> extraHeaders = new HashMap<String, String>();
-        extraHeaders.put(Interswitch.TERMINAL_ID, "3PBL0001");
-        String httpMethod = ConstantUtils.POST;
-        String resourceUrl = "api/v1/quickteller/payments/transfers";
-        interswitchResponse = AppDriver.interswitch.send(resourceUrl, httpMethod, json,extraHeaders);
+        Map<String, String> interswitchResponse = interswitch.send(Constants.TRANSFER_RESOURCE_URL, Constants.POST, json,extraHeaders);
         return interswitchResponse;
         //return null;
     }

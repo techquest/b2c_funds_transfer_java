@@ -9,6 +9,13 @@ public class Termination {
     private String currencyCode;
     private String paymentMethodCode;
     private String countryCode;
+    public Termination(String amount, String entityCode, String currencyCode, String paymentMethodCode, String countryCode){
+        this.amount = amount;
+        this.entityCode = entityCode;
+        this.currencyCode = currencyCode;
+        this.paymentMethodCode = paymentMethodCode;
+        this.countryCode = countryCode;
+    }
     public AccountReceivable getAccountReceivable() {
         return accountReceivable;
     }

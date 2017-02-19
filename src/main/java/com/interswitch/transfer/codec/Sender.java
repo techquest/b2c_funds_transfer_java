@@ -6,6 +6,13 @@ public class Sender {
     private String email;
     private String lastname;
     private String othernames;
+    
+    public Sender(String phone, String email, String lastname, String othernames){
+        this.phone = phone;
+        this.email = email;
+        this.lastname = lastname;
+        this.othernames = othernames;
+    }
     public String getPhone() {
         return phone;
     }
