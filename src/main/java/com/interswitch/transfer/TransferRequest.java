@@ -45,9 +45,9 @@ public class TransferRequest {
 
         private String terminationAmount;
         private String terminationEntityCode;
-        private String terminationCurrencyCode;
-        private String terminationPaymentMethodCode;
-        private String terminationCountryCode = Constants.CURRENCY_CODE;
+        private String terminationCurrencyCode = Constants.CURRENCY_CODE;
+        private String terminationPaymentMethodCode = Constants.TERMINATION_PAYMENT_METHOD_CODE;
+        private String terminationCountryCode = Constants.COUNTRY_CODE;
         private String terminationAccountNumber;
         private String terminationAccountType = Constants.ACCOUNT_TYPE;
 
@@ -67,25 +67,25 @@ public class TransferRequest {
 
         }
 
-        public Builder beneficiaryPhoneNumber(String phone) {
+        public Builder receiverPhoneNumber(String phone) {
 
             this.beneficiaryPhoneNumber = phone;
             return this;
         }
 
-        public Builder beneficiaryEmail(String email) {
+        public Builder receiverEmail(String email) {
 
             this.beneficiaryEmail = email;
             return this;
         }
 
-        public Builder beneficiaryLastName(String lastName) {
+        public Builder receiverLastName(String lastName) {
 
             this.beneficiaryLastName = lastName;
             return this;
         }
 
-        public Builder beneficiaryOtherNames(String otherName) {
+        public Builder receiverOtherNames(String otherName) {
 
             this.beneficiaryOtherNames = otherName;
             return this;
@@ -120,22 +120,23 @@ public class TransferRequest {
             return this;
         }
 
-        public Builder initiatorAmount(String amount) {
+        public Builder amount(String amount) {
             this.initiatorAmount = amount;
+            this.amount = amount;
             return this;
         }
 
-        public Builder initiatorCurrencyCode(String currencyCode) {
+        public Builder currencyCode(String currencyCode) {
             this.initiatorCurrencyCode = currencyCode;
             return this;
         }
 
-        public Builder initiatorPaymentMethodCode(String paymentMethodCode) {
+        public Builder paymentMethodCode(String paymentMethodCode) {
             this.initiatorPaymentMethodCode = paymentMethodCode;
             return this;
         }
 
-        public Builder initiatorChannel(String channel) {
+        public Builder channel(String channel) {
             this.initiatorChannel = channel;
             return this;
         }
@@ -155,24 +156,17 @@ public class TransferRequest {
             return this;
         }
 
-        public Builder terminationAccountNumber(String accountNumber) {
+        public Builder toAccountNumber(String accountNumber) {
             this.terminationAccountNumber = accountNumber;
             return this;
         }
 
-        public Builder terminationEntityCode(String entityCode) {
+        public Builder destinationBankCode(String entityCode) {
             this.terminationEntityCode = entityCode;
             return this;
         }
         public Builder terminationAccountType(String accountType) {
             this.terminationAccountType = accountType;
-            return this;
-        }
-
-        public Builder transferCode(String transferCode) {
-
-            this.transferCode = transferCode;
-
             return this;
         }
 
@@ -183,7 +177,7 @@ public class TransferRequest {
             return this;
         }
 
-        public Builder surcharge(String surcharge) {
+        public Builder fee(String surcharge) {
 
             this.surcharge = surcharge;
 
@@ -200,7 +194,7 @@ public class TransferRequest {
         // set data to the Transfer Request
         sender = new Sender(builder.senderPhoneNumber, builder.senderEmail, builder.senderLastName, builder.senderOtherNames);
         beneficiary = new Beneficiary(builder.beneficiaryPhoneNumber, builder.beneficiaryEmail, builder.beneficiaryLastName, builder.beneficiaryOtherNames);
-        initiation = new Initiation(builder.amount, builder.initiatorCurrencyCode, builder.initiatorPaymentMethodCode, builder.initiatorChannel);
+        initiation = new Initiation(builder.initiatorAmount, builder.initiatorCurrencyCode, builder.initiatorPaymentMethodCode, builder.initiatorChannel);
         AccountReceivable tmpAccount = new AccountReceivable(builder.terminationAccountNumber, builder.terminationAccountType);
         termination = new Termination(builder.amount, builder.terminationEntityCode, builder.terminationCurrencyCode,builder.terminationPaymentMethodCode, builder.terminationCountryCode);
         termination.setAccountReceivable(tmpAccount);
@@ -208,6 +202,10 @@ public class TransferRequest {
         transferCode = builder.transferCode;
         initiatingEntityCode = builder.initiatingEntityCode;
 
+    }
+
+    public void setMac(String mac) {
+        this.mac = mac;
     }
 
     public Sender getSender() {

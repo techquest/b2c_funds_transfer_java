@@ -9,7 +9,8 @@ public class Constants {
     public static final String TERMINAL_ID = "TerminalId";
     public static final String GET = "GET";
     public static final String POST = "POST";
-    public static final String TRANSFER_RESOURCE_URL = "api/v1/quickteller/payments/transfers";
+    public static final String TRANSFER_RESOURCE_URL = "api/v2/quickteller/payments/transfers";
     public static final int MAX_TRANSFER_LENGTH = 12;
+    public static final String COUNTRY_CODE = "NG";
     
 }

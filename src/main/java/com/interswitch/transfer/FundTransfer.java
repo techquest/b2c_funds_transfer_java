@@ -1,56 +1,88 @@
 package com.interswitch.transfer;
 
 import java.util.HashMap;
-import java.util.Map;
 
-import com.google.gson.Gson;
 import com.interswitch.techquest.auth.Interswitch;
-import com.interswitch.techquest.auth.utils.ConstantUtils;
+import com.interswitch.transfer.api.Validator;
 import com.interswitch.transfer.api.impl.GsonSerializer;
-import com.interswitch.transfer.driver.AppDriver;
+import com.interswitch.transfer.utility.Utility;
+import com.interswitch.transfer.validation.FundTransferValidator;
 
 public class FundTransfer implements Transfer {
-    
-    private String initiatingEntityCode;
-    private String clientId;
-    private String clientSecret;
-    
+
     private Interswitch interswitch;
-    
+
     private GsonSerializer codec;
     
-    public FundTransfer(String clientId, String clientSecret, String initiatingEntityCode) {
-        this.initiatingEntityCode=initiatingEntityCode;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.interswitch = new Interswitch(clientId, clientSecret,Interswitch.ENV_DEV);
-        codec = new GsonSerializer();
+    private Validator validator;
+
+    public static final String ATM = "1";
+    public static final String WEB = "3";
+    public static final String MOBILE = "4";
+    public static final String KIOSK = "5";
+    public static final String PCPOS = "6";
+    public static final String POS = "2";
+    public static final String LOCATION = "7";
+    public static final String DIRECT_DEBIT = "8";
+    
+
+    public FundTransfer(String clientId, String clientSecret, String env) {
+        this.interswitch = new Interswitch(clientId, clientSecret, env);
+        this.codec = new GsonSerializer();
+        this.validator = new FundTransferValidator();
+        
     }
 
-    public String getClientId() {
-        return clientId;
-    }
-
-    public String getClientSecret() {
-        return clientSecret;
-    }
-
-    public String getInitiatingEntityCode() {
-        return initiatingEntityCode;
-    }
-
-    public Object send(TransferRequest tr, Map<String, String> extraHeaders) throws Exception {
+    public Object send(TransferRequest tr) throws Exception {
+        
+        validator.validate(tr);
+        
+        String mac = Utility.generateMAC(tr);
+        
+        tr.setMac(mac);
         
         String json = codec.marshall(tr);
+        
         System.out.println(json);
-        Map<String, String> interswitchResponse = interswitch.send(Constants.TRANSFER_RESOURCE_URL, Constants.POST, json,extraHeaders);
-        return interswitchResponse;
-        //return null;
+        
+        HashMap<String, String> extraHeaders = new HashMap<>();
+        HashMap<String, String> response=null;
+        try {
+            response = interswitch.send(Constants.TRANSFER_RESOURCE_URL, Constants.POST, json, extraHeaders);
+        } catch (Exception ex) {
+            //connection error,
+            throw ex;
+        }
+        
+        if(response instanceof HashMap) {
+            
+            String responseCode = response.get(Interswitch.RESPONSE_CODE);
+            String msg = response.get(Interswitch.RESPONSE_MESSAGE);
+            
+            if(responseCode.equals("200")) {
+                
+            }
+            else if(responseCode.startsWith("4")){
+                
+            }
+            else if(responseCode.startsWith("5")){
+                
+            }
+            else {
+                //should never happen
+            }
+            
+        }
+        return response;
     }
 
-    public Object send() {
+    @Override
+    public Object send(Object obj) {
         // TODO Auto-generated method stub
         return null;
     }
+
+    
+
 
 }
