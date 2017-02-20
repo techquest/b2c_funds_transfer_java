@@ -47,7 +47,7 @@ public class FundTransfer implements Transfer {
         
         System.out.println(json);
         
-        HashMap<String, String> extraHeaders = new HashMap<>();
+        HashMap<String, String> extraHeaders = new HashMap<String, String>();
         HashMap<String, String> response=null;
         try {
             response = interswitch.send(Constants.TRANSFER_RESOURCE_URL, Constants.POST, json, extraHeaders);
@@ -64,6 +64,8 @@ public class FundTransfer implements Transfer {
             String msg = response.get(Interswitch.RESPONSE_MESSAGE);
             Gson g = new Gson();
             resp = g.fromJson(msg, TransferResponse.class);
+            
+            //verify resp here
             
         }
         return resp;

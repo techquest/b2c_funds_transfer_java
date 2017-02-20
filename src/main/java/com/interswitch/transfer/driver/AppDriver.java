@@ -53,6 +53,10 @@ public class AppDriver {
             }
             else if(response.getResponseCode().equalsIgnoreCase("90000")) {
                 //SUCCESS
+                String mac = response.getMac();
+                String transactionDate = response.getTransactionDate();
+                String responseCode = response.getResponseCode();
+                
             }
             else {
                 //NOT SUCCESSFUL
