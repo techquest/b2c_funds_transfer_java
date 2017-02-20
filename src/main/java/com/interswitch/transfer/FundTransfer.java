@@ -2,9 +2,11 @@ package com.interswitch.transfer;
 
 import java.util.HashMap;
 
+import com.google.gson.Gson;
 import com.interswitch.techquest.auth.Interswitch;
 import com.interswitch.transfer.api.Validator;
 import com.interswitch.transfer.api.impl.GsonSerializer;
+import com.interswitch.transfer.codec.TransferResponse;
 import com.interswitch.transfer.utility.Utility;
 import com.interswitch.transfer.validation.FundTransferValidator;
 
@@ -33,7 +35,7 @@ public class FundTransfer implements Transfer {
         
     }
 
-    public Object send(TransferRequest tr) throws Exception {
+    public TransferResponse send(TransferRequest tr) throws Exception {
         
         validator.validate(tr);
         
@@ -54,26 +56,17 @@ public class FundTransfer implements Transfer {
             throw ex;
         }
         
+        TransferResponse resp = new TransferResponse();
+        
         if(response instanceof HashMap) {
             
             String responseCode = response.get(Interswitch.RESPONSE_CODE);
             String msg = response.get(Interswitch.RESPONSE_MESSAGE);
-            
-            if(responseCode.equals("200")) {
-                
-            }
-            else if(responseCode.startsWith("4")){
-                
-            }
-            else if(responseCode.startsWith("5")){
-                
-            }
-            else {
-                //should never happen
-            }
+            Gson g = new Gson();
+            resp = g.fromJson(msg, TransferResponse.class);
             
         }
-        return response;
+        return resp;
     }
 
     @Override

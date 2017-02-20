@@ -3,6 +3,8 @@ package com.interswitch.transfer.driver;
 import com.interswitch.techquest.auth.Interswitch;
 import com.interswitch.transfer.FundTransfer;
 import com.interswitch.transfer.TransferRequest;
+import com.interswitch.transfer.codec.ErrorResponse;
+import com.interswitch.transfer.codec.TransferResponse;
 
 public class AppDriver {
 
@@ -35,11 +37,26 @@ public class AppDriver {
             .destinationBankCode("044")/* mandatory:  To be gotten from the get all banks code*/
             .toAccountNumber("0114951936") // mandatory
             .fee("10000")// optional
-            .requestRef("10360575603527")// mandatory
+            .requestRef("80360575603527")// mandatory
             .build();
 
         try {
-            transfer.send(transferer);
+            TransferResponse response = transfer.send(transferer);
+            
+            if(response.getError() instanceof ErrorResponse) {
+                /**
+                 * NOT SUCCESSFUL
+                 */
+                String code = response.getError().getCode();
+                String message = response.getError().getMessage();
+                
+            }
+            else if(response.getResponseCode().equalsIgnoreCase("90000")) {
+                //SUCCESS
+            }
+            else {
+                //NOT SUCCESSFUL
+            }
         } catch (Exception e) {
             // contact support at interswitch
             e.printStackTrace();

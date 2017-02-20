@@ -19,4 +19,6 @@ public class GsonSerializer implements JsonSerializer {
         return g.fromJson(str, obj.getClass());
     }
 
+   
+
 }
