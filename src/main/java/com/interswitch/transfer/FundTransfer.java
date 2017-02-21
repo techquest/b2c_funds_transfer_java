@@ -6,11 +6,12 @@ import com.google.gson.Gson;
 import com.interswitch.techquest.auth.Interswitch;
 import com.interswitch.transfer.api.Validator;
 import com.interswitch.transfer.api.impl.GsonSerializer;
+import com.interswitch.transfer.codec.BankResponse;
 import com.interswitch.transfer.codec.TransferResponse;
 import com.interswitch.transfer.utility.Utility;
 import com.interswitch.transfer.validation.FundTransferValidator;
 
-public class FundTransfer implements Transfer {
+public class FundTransfer implements Transfer,FetchBanks {
 
     private Interswitch interswitch;
 
@@ -75,6 +76,20 @@ public class FundTransfer implements Transfer {
     public Object send(Object obj) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public BankResponse fetchBanks() throws Exception {
+        
+        HashMap<String, String> extraHeaders = new HashMap<String, String>();
+        HashMap<String, String> response = interswitch.send(Constants.GET_ALL_BANKS_RESOURCE_URL, Constants.GET, "", extraHeaders);
+        
+        String responseCode = response.get(Interswitch.RESPONSE_CODE);
+        String msg = response.get(Interswitch.RESPONSE_MESSAGE);
+        Gson g = new Gson();
+        BankResponse resp = g.fromJson(msg, BankResponse.class);
+        
+        return resp;
+        
     }
 
     

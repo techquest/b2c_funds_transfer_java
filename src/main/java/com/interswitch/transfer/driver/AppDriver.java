@@ -1,8 +1,11 @@
 package com.interswitch.transfer.driver;
 
+
 import com.interswitch.techquest.auth.Interswitch;
 import com.interswitch.transfer.FundTransfer;
 import com.interswitch.transfer.TransferRequest;
+import com.interswitch.transfer.codec.Bank;
+import com.interswitch.transfer.codec.BankResponse;
 import com.interswitch.transfer.codec.ErrorResponse;
 import com.interswitch.transfer.codec.TransferResponse;
 
@@ -23,7 +26,7 @@ public class AppDriver {
          */
         FundTransfer transfer = new FundTransfer(clientId, clientSecret, Interswitch.ENV_DEV);
 
-        TransferRequest transferer = new TransferRequest.Builder(initiatingEntityCode) // Get your Business Entity Code from Interswitch
+        TransferRequest request = new TransferRequest.Builder(initiatingEntityCode) // Get your Business Entity Code from Interswitch
             .senderPhoneNumber("07036913492") // optional
             .senderEmail("grandeur_man@yahoo.com") // optional
             .senderLastName("Desmond") // optional
@@ -41,7 +44,10 @@ public class AppDriver {
             .build();
 
         try {
-            TransferResponse response = transfer.send(transferer);
+            
+            //transfer.validateAccount(banks[0].getCode(), "accountNo")
+            
+            TransferResponse response = transfer.send(request);
             
             if(response.getError() instanceof ErrorResponse) {
                 /**
@@ -65,7 +71,9 @@ public class AppDriver {
             // contact support at interswitch
             e.printStackTrace();
         }
-        /***- FINISH - ***/
+        
+        
 
-    }
-}
+    /***- FINISH - ***/
+
+}}
