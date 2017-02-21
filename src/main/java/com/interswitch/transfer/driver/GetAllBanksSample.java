@@ -31,8 +31,8 @@ public class GetAllBanksSample {
                 Bank testBank = bank[0]; // bank at index 0
 
                 String cbnCode = testBank.getCbnCode(); // Central bank code
-                String bankName = testBank.getBankName(); // bank name
-                String bankCode = testBank.getBankCode(); // interswitch specific bank code
+                String bankName = testBank.getBankName(); // bank name: 
+                String bankCode = testBank.getBankCode(); // bankcode in alphabetical form: UBA, GTB, FBN
 
             } else {
 

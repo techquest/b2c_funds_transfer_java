@@ -45,7 +45,6 @@ public class AppDriver {
 
         try {
             
-            //transfer.validateAccount(banks[0].getCode(), "accountNo")
             
             TransferResponse response = transfer.send(request);
             
