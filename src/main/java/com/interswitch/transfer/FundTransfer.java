@@ -14,7 +14,7 @@ import com.interswitch.transfer.validation.FundTransferValidator;
 
 public class FundTransfer implements Transfer, FetchBanks {
 
-    private Interswitch interswitch;
+    public static Interswitch interswitch;
 
     private GsonSerializer codec;
 
@@ -30,7 +30,7 @@ public class FundTransfer implements Transfer, FetchBanks {
     public static final String DIRECT_DEBIT = "8";
 
     public FundTransfer(String clientId, String clientSecret, String env) {
-        this.interswitch = new Interswitch(clientId, clientSecret, env);
+        interswitch = new Interswitch(clientId, clientSecret, env);
         this.codec = new GsonSerializer();
         this.validator = new FundTransferValidator();
 
@@ -92,9 +92,11 @@ public class FundTransfer implements Transfer, FetchBanks {
 
     }
 
-    public AccountValidation validateAccount(String bankCode, String accountNumber) throws Exception {
+    public AccountValidation validateAccount() throws Exception {
 
         /// api/v1/nameenquiry/banks/076/accounts/3011747903
+        String bankCode = "";
+        String accountNumber = "";
         HashMap<String, String> extraHeaders = new HashMap<String, String>();
         String url = Constants.ACCOUNT_VALIDATION_URL_PREFIX + bankCode + "/"+ Constants.ACCOUNT_VALIDATION_URL_SUFFIX + accountNumber;
         HashMap<String, String> response = interswitch.send(url, Constants.GET, "", extraHeaders);

@@ -1,6 +1,11 @@
 package com.interswitch.transfer;
 
+import java.util.HashMap;
+
+import com.google.gson.Gson;
+import com.interswitch.techquest.auth.Interswitch;
 import com.interswitch.transfer.codec.AccountReceivable;
+import com.interswitch.transfer.codec.AccountValidation;
 import com.interswitch.transfer.codec.Beneficiary;
 import com.interswitch.transfer.codec.Initiation;
 import com.interswitch.transfer.codec.Sender;
@@ -20,6 +25,25 @@ public class TransferRequest {
     private String initiatingEntityCode;
 
     private String transferCode;
+    
+    private String accountNumber;
+    private String bankCode;
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
 
     public static class Builder {
 
@@ -163,6 +187,7 @@ public class TransferRequest {
 
         public Builder destinationBankCode(String entityCode) {
             this.terminationEntityCode = entityCode;
+            
             return this;
         }
         public Builder terminationAccountType(String accountType) {
@@ -201,6 +226,8 @@ public class TransferRequest {
         surcharge = builder.surcharge;
         transferCode = builder.transferCode;
         initiatingEntityCode = builder.initiatingEntityCode;
+        this.setAccountNumber(builder.terminationAccountNumber);
+        this.setBankCode(builder.terminationEntityCode);
 
     }
 
@@ -238,5 +265,21 @@ public class TransferRequest {
 
     public String getTransferCode() {
         return transferCode;
+    }
+
+    public AccountValidation validateAccount() throws Exception {
+        // TODO Auto-generated method stub
+            String bankCode = this.getBankCode();
+            String accountNumber = this.getTransferCode();
+            HashMap<String, String> extraHeaders = new HashMap<String, String>();
+            String url = Constants.ACCOUNT_VALIDATION_URL_PREFIX + bankCode + "/"+ Constants.ACCOUNT_VALIDATION_URL_SUFFIX + accountNumber+"/names";
+            HashMap<String, String> response = FundTransfer.interswitch.send(url, Constants.GET, "", extraHeaders);
+
+            String responseCode = response.get(Interswitch.RESPONSE_CODE);
+            String msg = response.get(Interswitch.RESPONSE_MESSAGE);
+            Gson g = new Gson();
+            AccountValidation resp = g.fromJson(msg, AccountValidation.class);
+
+            return resp;
     }
 }
