@@ -58,22 +58,17 @@ public class AppDriver {
                     .fee("10000")// optional
                     .requestRef("60360575603527")// mandatory
                     .build();
-                
-                
-                AccountValidation validationResponse = request.validateAccount();//validate account
-                
-                if(validationResponse instanceof AccountValidation) {
+
+                AccountValidation validationResponse = request.validateAccount();// validate account
+
+                if (validationResponse instanceof AccountValidation) {
                     String accountName = validationResponse.getAccountName();
                 }
-                
+
                 TransferResponse response = transfer.send(request);
-                
-                
 
                 if (response.getError() instanceof ErrorResponse) {
-                    /**
-                     * NOT SUCCESSFUL
-                     */
+                    //NOT SUCCESSFUL
                     String code = response.getError()
                         .getCode();
                     String message = response.getError()
@@ -81,37 +76,22 @@ public class AppDriver {
 
                 } else if (response.getResponseCode()
                     .equalsIgnoreCase("90000")) {
+
                     // SUCCESS
                     String mac = response.getMac();
                     String transactionDate = response.getTransactionDate();
                     String responseCode = response.getResponseCode();
 
                 } else {
-                    // NOT SUCCESSFUL
+                    // transfer was not successful
                 }
 
             } else {
 
-                throw new Exception("");
             }
         } catch (Exception ex) {
 
         }
-
-        // build
-
-        // name enquiry
-
-        // send
-
-        try {
-
-        } catch (Exception e) {
-            // contact support at interswitch
-            e.printStackTrace();
-        }
-
-        /***- FINISH - ***/
 
     }
 }
