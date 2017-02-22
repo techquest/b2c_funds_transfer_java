@@ -59,7 +59,7 @@ public class AppDriver {
                     .requestRef("60360575603527")// mandatory
                     .build();
 
-                AccountValidation validationResponse = request.validateAccount();// validate account
+                AccountValidation validationResponse = transfer.validateAccount(request);// validate account
 
                 if (validationResponse instanceof AccountValidation) {
                     String accountName = validationResponse.getAccountName();
@@ -68,7 +68,7 @@ public class AppDriver {
                 TransferResponse response = transfer.send(request);
 
                 if (response.getError() instanceof ErrorResponse) {
-                    //NOT SUCCESSFUL
+                    // NOT SUCCESSFUL
                     String code = response.getError()
                         .getCode();
                     String message = response.getError()

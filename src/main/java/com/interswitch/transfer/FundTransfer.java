@@ -92,11 +92,11 @@ public class FundTransfer implements Transfer, FetchBanks {
 
     }
 
-    public AccountValidation validateAccount() throws Exception {
+    public AccountValidation validateAccount(TransferRequest request) throws Exception {
 
         /// api/v1/nameenquiry/banks/076/accounts/3011747903
-        String bankCode = "";
-        String accountNumber = "";
+        String bankCode = request.getBankCode();
+        String accountNumber = request.getAccountNumber();
         HashMap<String, String> extraHeaders = new HashMap<String, String>();
         String url = Constants.ACCOUNT_VALIDATION_URL_PREFIX + bankCode + "/"+ Constants.ACCOUNT_VALIDATION_URL_SUFFIX + accountNumber;
         HashMap<String, String> response = interswitch.send(url, Constants.GET, "", extraHeaders);
