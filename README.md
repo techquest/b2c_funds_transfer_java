@@ -61,7 +61,7 @@ public class AppDriver {
                     .requestRef("60360575603527")// mandatory
                     .build();
 
-                AccountValidation validationResponse = request.validateAccount();// validate account
+                AccountValidation validationResponse = transfer.validateAccount(request);// validate account
 
                 if (validationResponse instanceof AccountValidation) {
                     String accountName = validationResponse.getAccountName();
