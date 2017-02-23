@@ -65,7 +65,7 @@ public class AppDriver {
                     String accountName = validationResponse.getAccountName();
                 }
 
-                TransferResponse response = transfer.send(request);
+                TransferResponse response = transfer.send(request); // send transfer request
 
                 if (response.getError() instanceof ErrorResponse) {
                     // NOT SUCCESSFUL

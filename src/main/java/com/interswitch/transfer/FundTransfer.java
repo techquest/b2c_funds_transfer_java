@@ -98,7 +98,7 @@ public class FundTransfer implements Transfer, FetchBanks {
         String bankCode = request.getBankCode();
         String accountNumber = request.getAccountNumber();
         HashMap<String, String> extraHeaders = new HashMap<String, String>();
-        String url = Constants.ACCOUNT_VALIDATION_URL_PREFIX + bankCode + "/"+ Constants.ACCOUNT_VALIDATION_URL_SUFFIX + accountNumber;
+        String url = Constants.ACCOUNT_VALIDATION_URL_PREFIX + bankCode + "/"+ Constants.ACCOUNT_VALIDATION_URL_SUFFIX + accountNumber+"/names";
         HashMap<String, String> response = interswitch.send(url, Constants.GET, "", extraHeaders);
 
         String responseCode = response.get(Interswitch.RESPONSE_CODE);
