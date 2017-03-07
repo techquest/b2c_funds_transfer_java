@@ -1,5 +1,3 @@
-# B2C-Funds-Transfer
-```
 package com.interswitch.transfer.driver;
 
 import com.interswitch.techquest.auth.Interswitch;
@@ -101,4 +99,3 @@ public class AppDriver {
 
     }
 }
-```
