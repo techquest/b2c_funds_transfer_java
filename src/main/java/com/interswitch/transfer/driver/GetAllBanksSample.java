@@ -1,7 +1,7 @@
 package com.interswitch.transfer.driver;
 
 import com.interswitch.techquest.auth.Interswitch;
-import com.interswitch.transfer.FundTransfer;
+import com.interswitch.transfer.FundsTransfer;
 import com.interswitch.transfer.codec.Bank;
 import com.interswitch.transfer.codec.BankResponse;
 
@@ -17,7 +17,7 @@ public class GetAllBanksSample {
          * 
          * Interswitch.ENV_PROD, is for production environment
          */
-        FundTransfer transfer = new FundTransfer(clientId, clientSecret, Interswitch.ENV_DEV);
+        FundsTransfer transfer = new FundsTransfer(clientId, clientSecret, Interswitch.ENV_DEV);
 
         try {
 

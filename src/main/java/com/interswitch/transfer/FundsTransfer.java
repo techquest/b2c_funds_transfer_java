@@ -12,7 +12,7 @@ import com.interswitch.transfer.codec.TransferResponse;
 import com.interswitch.transfer.utility.Utility;
 import com.interswitch.transfer.validation.FundTransferValidator;
 
-public class FundTransfer implements Transfer, FetchBanks {
+public class FundsTransfer implements Transfer, FetchBanks {
 
     public static Interswitch interswitch;
 
@@ -29,11 +29,14 @@ public class FundTransfer implements Transfer, FetchBanks {
     public static final String LOCATION = "7";
     public static final String DIRECT_DEBIT = "8";
 
-    public FundTransfer(String clientId, String clientSecret, String env) {
+    public FundsTransfer(String clientId, String clientSecret, String env) {
         interswitch = new Interswitch(clientId, clientSecret, env);
         this.codec = new GsonSerializer();
         this.validator = new FundTransferValidator();
 
+    }
+    public FundsTransfer(String clientId, String clientSecret) {
+        this(clientId, clientSecret, Interswitch.ENV_SANDBOX);
     }
 
     public TransferResponse send(TransferRequest tr) throws Exception {
@@ -72,12 +75,6 @@ public class FundTransfer implements Transfer, FetchBanks {
         return resp;
     }
 
-    @Override
-    public Object send(Object obj) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     public BankResponse fetchBanks() throws Exception {
 
         HashMap<String, String> extraHeaders = new HashMap<String, String>();
@@ -98,7 +95,7 @@ public class FundTransfer implements Transfer, FetchBanks {
         String bankCode = request.getBankCode();
         String accountNumber = request.getAccountNumber();
         HashMap<String, String> extraHeaders = new HashMap<String, String>();
-        String url = Constants.ACCOUNT_VALIDATION_URL_PREFIX + bankCode + "/"+ Constants.ACCOUNT_VALIDATION_URL_SUFFIX + accountNumber+"/names";
+        String url = Constants.ACCOUNT_VALIDATION_URL_PREFIX + bankCode + "/" + Constants.ACCOUNT_VALIDATION_URL_SUFFIX + accountNumber + "/names";
         HashMap<String, String> response = interswitch.send(url, Constants.GET, "", extraHeaders);
 
         String responseCode = response.get(Interswitch.RESPONSE_CODE);
@@ -107,6 +104,11 @@ public class FundTransfer implements Transfer, FetchBanks {
         AccountValidation resp = g.fromJson(msg, AccountValidation.class);
 
         return resp;
+    }
+
+    public Object send(Object obj) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

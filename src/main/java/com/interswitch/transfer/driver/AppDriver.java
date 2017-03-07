@@ -1,7 +1,7 @@
 package com.interswitch.transfer.driver;
 
 import com.interswitch.techquest.auth.Interswitch;
-import com.interswitch.transfer.FundTransfer;
+import com.interswitch.transfer.FundsTransfer;
 import com.interswitch.transfer.TransferRequest;
 import com.interswitch.transfer.codec.AccountValidation;
 import com.interswitch.transfer.codec.Bank;
@@ -12,21 +12,25 @@ import com.interswitch.transfer.codec.TransferResponse;
 public class AppDriver {
 
     private static final String initiatingEntityCode = "PBL";
-    private final static String clientId = "IKIA2EFBE1EF63D1BBE2AF6E59100B98E1D3043F477A";
-    private final static String clientSecret = "uAk0Amg6NQwQPcnb9BTJzxvMS6Vz22octQglQ1rfrMA=";
+    
+    //test clientId and clientSecret
+    //private final static String clientId = "IKIA2EFBE1EF63D1BBE2AF6E59100B98E1D3043F477A";
+    //private final static String clientSecret = "uAk0Amg6NQwQPcnb9BTJzxvMS6Vz22octQglQ1rfrMA=";
+    
+    // sandbox clienId client
+    private final static String clientId = "IKIA6570778A3484D6F33BC7E4165ADCA6CF06B2860A";
+    private final static String clientSecret = "DXfUwpuIvMAKN84kv38uspqGOsStgFS0oZMjU7bPwpU=";
 
     public static void main(String[] args) {
 
         /***- START- ***/
 
-        /**
-         * Interswitch.ENV_SANDBOX, is for sandbox environment
-         * 
-         * Interswitch.ENV_PROD, is for production environment
-         */
-        FundTransfer transfer = new FundTransfer(clientId, clientSecret, Interswitch.ENV_DEV);
+        FundsTransfer transfer = new FundsTransfer(clientId, clientSecret, Interswitch.ENV_SANDBOX);
+        //FundTransfer transfer = new FundTransfer(clientId, clientSecret, Interswitch.ENV_PRODUCTION); // Production
+        //FundTransfer transfer = new FundTransfer(clientId, clientSecret); // Defaults to Sandbox
 
         try {
+            
             // get all banks request
             BankResponse bankResponse = transfer.fetchBanks();
 
@@ -43,6 +47,11 @@ public class AppDriver {
 
                 // build transfer request
                 TransferRequest request = new TransferRequest.Builder(initiatingEntityCode) // Get your Business Entity Code from Interswitch
+                    .amount("100000") // mandatory, minor denomination
+                    .channel(FundsTransfer.LOCATION) // mandatory: ATM-1, POS-2, WEB-3, MOBILE-4, KIOSK-5, PCPOS-6, LOCATION-7, DIRECT DEBIT-8
+                    .destinationBankCode(cbnCode)/* mandatory:  To be gotten from the get all banks code (transfer.fetchBanks())*/
+                    .toAccountNumber("0114951936") // mandatory
+                    .requestRef("60360575603527")// mandatory
                     .senderPhoneNumber("07036913492") // optional
                     .senderEmail("grandeur_man@yahoo.com") // optional
                     .senderLastName("Desmond") // optional
@@ -51,12 +60,7 @@ public class AppDriver {
                     .receiverEmail("grandeur_man@yahoo.com") // optional
                     .receiverLastName("Desmond") // optional
                     .receiverOtherNames("Samuel") // optional
-                    .amount("100000") // mandatory, minor denomination
-                    .channel(FundTransfer.LOCATION) // mandatory: ATM-1, POS-2, WEB-3, MOBILE-4, KIOSK-5, PCPOS-6, LOCATION-7, DIRECT DEBIT-8
-                    .destinationBankCode(cbnCode)/* mandatory:  To be gotten from the get all banks code*/
-                    .toAccountNumber("0114951936") // mandatory
                     .fee("10000")// optional
-                    .requestRef("60360575603527")// mandatory
                     .build();
 
                 AccountValidation validationResponse = transfer.validateAccount(request);// validate account

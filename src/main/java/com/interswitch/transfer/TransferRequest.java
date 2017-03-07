@@ -273,7 +273,7 @@ public class TransferRequest {
             String accountNumber = this.getTransferCode();
             HashMap<String, String> extraHeaders = new HashMap<String, String>();
             String url = Constants.ACCOUNT_VALIDATION_URL_PREFIX + bankCode + "/"+ Constants.ACCOUNT_VALIDATION_URL_SUFFIX + accountNumber+"/names";
-            HashMap<String, String> response = FundTransfer.interswitch.send(url, Constants.GET, "", extraHeaders);
+            HashMap<String, String> response = FundsTransfer.interswitch.send(url, Constants.GET, "", extraHeaders);
 
             String responseCode = response.get(Interswitch.RESPONSE_CODE);
             String msg = response.get(Interswitch.RESPONSE_MESSAGE);

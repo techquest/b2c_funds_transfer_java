@@ -8,7 +8,6 @@ import com.interswitch.transfer.exceptions.MissingFieldException;
 
 public class FundTransferValidator implements Validator {
 
-    @Override
     public void validate(Object obj) throws MissingFieldException, InvalidRequestException {
 
         if (!(obj instanceof TransferRequest)) {
