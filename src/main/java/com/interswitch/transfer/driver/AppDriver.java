@@ -60,7 +60,7 @@ public class AppDriver {
                     .receiverEmail("grandeur_man@yahoo.com") // optional
                     .receiverLastName("Desmond") // optional
                     .receiverOtherNames("Samuel") // optional
-                    .fee("10000")// optional
+                    .fee("10000")// optional (minor denomination)
                     .build();
 
                 AccountValidation validationResponse = transfer.validateAccount(request);// validate account
