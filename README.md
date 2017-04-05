@@ -1,34 +1,32 @@
 Interswitch Funds Transfer for Java.
 ====
-[Support chat](https://gitter.im/techquest)
+[Support chat](https://interswitch.slack.com/messages/C4ULTK04T/)
 
-This project is based on interswitch base [Interswitch](https://github.com/techquest/interswitch_java) library.
+This repository contains Java SDK and samples for Business to Consumer funds transfer.
 
-| JDK Version compatibility |
-| ------------- | ------------- |
-|1.8+, 1.7, 1.6 |
+## Prerequisites
+* Java JDK 6 or higher
+* An environment which supports TLS 1.2
+* Interswitch Base Library [Click here](https://github.com/techquest/interswitch_java)
 
-Features
+
+What this SDK provides for you
 ================================
 
 * Fetch all banks
-
 	Get a list of all banks supported on our platform.
 
-* Account Validation
-  
-  	Validates an account number against a particular bank. If the account number was registered under the bank,
-  	it returns a successful response. Otherwise, it returns a failed response.
+* Account Number Validation
+  	Validates an account number against a particular bank
 
 * Funds Transfer.
-
 	Transfers funds from a senders account to receivers account.
-	
+
+
 Quick start
 ===============================
 
 #### Maven 
-    <!-- JDK 1.6+ compatible -->
     <dependency>
         <groupId>com.interswitch</groupId>
         <artifactId>interswitch-java</artifactId>
@@ -41,6 +39,8 @@ Quick start
 	</dependency>
 
 #### Fetch All Banks Request
+
+To get you started, try out our simple Fetch all banks request.
 
 ```java
 
@@ -73,9 +73,14 @@ public static void main(String[] args) {
     	 }
     }
     catch(Exception ex) {
-    
+        //
+        ex.printStackTrace();
     }
 }
 ```
 
-#### Accounts Validation Request
+#### Support Team
+
+Still experiencing issues, quickly talk to our Engineers at
+[Support chat](https://interswitch.slack.com/messages/C4ULTK04T/) or [Support chat](https://gitter.im/techquest) and get your issues fixed in a giffy.
+
